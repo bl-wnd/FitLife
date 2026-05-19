@@ -1,26 +1,112 @@
 # Проект FitLife - MVP версия 1.0
 
 
-# 1. Знакомство
-# TODO: Спроси у пользователя имя и сохрани в переменную user_name
-# TODO: Спроси возраст и сохрани в переменную user_age (не забудь преобразовать в число)
+import os
+import sys
 
 
-# 2. Сбор данных
-# TODO: Запроси вес (в кг) и сохрани в user_weight (тип float)
-# TODO: Запроси рост (в метрах, например 1.75) и сохрани в user_height (тип float)
+ML_IN_L = 1000
+PEP_STR_LEN = 79
 
 
-# 3. Логика расчетов (Функции как "черный ящик": используем арифметику)
-# Формула ИМТ: вес разделить на (рост в квадрате)
-# TODO: Рассчитай bmi (Индекс массы тела)
+def clear_console():
+    """Функция очищения консоли"""
+    # 'nt' если Windows, в остальных случаях *NIX
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
-# Подсчет воды: вес * 30 мл
-# TODO: Рассчитай water_needed
+def print_head():
+    """Функция печати заголовка"""
+    project_name = 'FITLIFE'
+    len_project_name = len(project_name)
+    mid_str_symbol_len = (PEP_STR_LEN - len_project_name) // 2 - 1
+    print('*' * PEP_STR_LEN)
+    print('*' * mid_str_symbol_len, end=' ')
+    print(project_name, end=' ')
+    print('*' * mid_str_symbol_len)
+    print('*' * PEP_STR_LEN)
 
 
-# 4. Вывод красивого результата
-# TODO: Используй f-строку, чтобы вывести приветствие, например: "Привет, Иван!"
-# TODO: Выведи возраст, ИМТ (округленный до 1 знака) и норму воды.
-print("Расчет окончен. Будьте здоровы!")
+# def convert_var(variable, var_type):
+#     """
+#     Функция для преобразования типа переменной и проверки возможности
+#     этого преобразования
+#     """
+#     try:
+#         variable = var_type(variable)
+#     except ValueError:
+#         print('Критическая ошибка. Проверьте правильность ввода данных.')
+#         sys.exit(1)
+#     return variable
+
+
+def hello_user():
+    """Функция приветствует пользователя, получает от него данные"""
+    # Приветствуем пользователя и спрашиваем его имя. Полученный ответ в виде
+    # строки с заглавными буквами каждого слова записываем в
+    # переменную user_name
+    print('Привет! Я бот Fitlife. Давайте знакомиться!')
+    user_name = input('Как Вас зовут? ').title()
+    print('Рад приветствовать,', user_name, end='! ')
+    # Выводим на экран общую информацию о возможностях нашей программы
+    print('Я помогу Вам высчитать индекс массы тела')
+    print('и дам рекомендации по суточной норме воды.')
+    print('Для этого мне потребуются от вас некоторые данные.')
+    print('Прошу вводить их в указанных единицах для корректности подсчётов.')
+    # Считываем введённые данные о возрасте, весе, росте, приводим их
+    # к нужному типу и присваиваем значение переменным
+    print('Сколько вам полных лет?', end=' ')
+#    user_age = convert_var(input('(Пример: 32)|: '), int)
+    user_age = input('(Пример: 32)|: ')
+    print('Какой ваш вес в килограммах?', end=' ')
+#    user_weight = convert_var(input('(Пример: 79.4 или 85): '), float)
+    user_weight = input('(Пример: 79.4 или 85): ')
+    print('Укажите Ваш рост в метрах.', end=' ')
+#    user_height = convert_var(input('(Пример: 1.81 или 2): '), float)
+    user_height = input('(Пример: 1.81 или 2): ')
+    return user_name, user_age, user_weight, user_height
+
+
+def calculate_bmi(weight, height):
+    """Функция для подсчёта индекса массы тела"""
+    bmi = weight / (height ** 2)
+    bmi = round(bmi, 1)
+    return bmi
+
+
+def calculate_daily_water(weight):
+    """Функция для подсчёта нормы воды в день"""
+    ML_PER_KG = 30
+    water_ml = weight * ML_PER_KG
+    return water_ml
+
+
+def calc_print_result(user_name, user_age, user_weight, user_height):
+    """Функция выводит на экран вычисленные значения"""
+    print('=' * PEP_STR_LEN)
+    print(f'{user_name}, возраст: {user_age}, ', end='')
+    # Выводим на экран BMI
+    print(f'Ваш индекс массы тела (BMI): '
+          f'{calculate_bmi(user_weight, user_height)}')
+    # Выводим на экран норму воды в день
+    print(f'Норма потребления воды в день: '
+          f'{round((calculate_daily_water(user_weight) / ML_IN_L), 1)} л')
+
+
+# очищаем консоль перед выполнением программы
+clear_console()
+# Рисуем шапку
+print_head()
+# Запрашиваем данные у пользователя, преобразуем их, записываем результат
+name, age, weight, height = hello_user()
+try:
+    # Приводим переменные к нужному типу
+    age = int(age)
+    weight = float(weight)
+    height = float(height)
+except ValueError:
+    # Выводим сообщение об ошибке ввода, если не удалось преобразовать данные
+    print('Критическая ошибка. Проверьте правильность ввода данных.')
+    sys.exit(1)
+# Считаем и выводим нужные параметры
+calc_print_result(name, age, weight, height)
