@@ -4,7 +4,6 @@
 import os
 import sys
 
-
 ML_IN_L = 1000
 PEP_STR_LEN = 79
 
@@ -27,19 +26,6 @@ def print_head():
     print('*' * PEP_STR_LEN)
 
 
-# def convert_var(variable, var_type):
-#     """
-#     Функция для преобразования типа переменной и проверки возможности
-#     этого преобразования
-#     """
-#     try:
-#         variable = var_type(variable)
-#     except ValueError:
-#         print('Критическая ошибка. Проверьте правильность ввода данных.')
-#         sys.exit(1)
-#     return variable
-
-
 def hello_user():
     """Функция приветствует пользователя, получает от него данные"""
     # Приветствуем пользователя и спрашиваем его имя. Полученный ответ в виде
@@ -56,13 +42,10 @@ def hello_user():
     # Считываем введённые данные о возрасте, весе, росте, приводим их
     # к нужному типу и присваиваем значение переменным
     print('Сколько вам полных лет?', end=' ')
-#    user_age = convert_var(input('(Пример: 32)|: '), int)
     user_age = input('(Пример: 32)|: ')
     print('Какой ваш вес в килограммах?', end=' ')
-#    user_weight = convert_var(input('(Пример: 79.4 или 85): '), float)
     user_weight = input('(Пример: 79.4 или 85): ')
     print('Укажите Ваш рост в метрах.', end=' ')
-#    user_height = convert_var(input('(Пример: 1.81 или 2): '), float)
     user_height = input('(Пример: 1.81 или 2): ')
     return user_name, user_age, user_weight, user_height
 
@@ -70,15 +53,13 @@ def hello_user():
 def calculate_bmi(weight, height):
     """Функция для подсчёта индекса массы тела"""
     bmi = weight / (height ** 2)
-    bmi = round(bmi, 1)
-    return bmi
+    return round(bmi, 1)
 
 
 def calculate_daily_water(weight):
     """Функция для подсчёта нормы воды в день"""
     ML_PER_KG = 30
-    water_ml = weight * ML_PER_KG
-    return water_ml
+    return weight * ML_PER_KG
 
 
 def calc_print_result(user_name, user_age, user_weight, user_height):
@@ -86,11 +67,11 @@ def calc_print_result(user_name, user_age, user_weight, user_height):
     print('=' * PEP_STR_LEN)
     print(f'{user_name}, возраст: {user_age}, ', end='')
     # Выводим на экран BMI
-    print(f'Ваш индекс массы тела (BMI): '
-          f'{calculate_bmi(user_weight, user_height)}')
+    bmi = round(calculate_bmi(user_weight, user_height), 1)
+    print(f'Ваш индекс массы тела (BMI): {bmi}')
     # Выводим на экран норму воды в день
-    print(f'Норма потребления воды в день: '
-          f'{round((calculate_daily_water(user_weight) / ML_IN_L), 1)} л')
+    daily_water = round((calculate_daily_water(user_weight) / ML_IN_L), 1)
+    print(f'Норма потребления воды в день: {daily_water} л')
 
 
 # очищаем консоль перед выполнением программы
