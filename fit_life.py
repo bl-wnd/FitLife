@@ -2,7 +2,6 @@
 
 
 import os
-import sys
 
 ML_IN_L = 1000
 PEP_STR_LEN = 79
@@ -26,14 +25,69 @@ def print_head():
     print('*' * PEP_STR_LEN)
 
 
+def enter_name():
+    """Функция ввода имени"""
+    while True:
+        user_name = input('Как Вас зовут? ').strip().title()
+        if user_name:
+            break
+        print('Имя должно содержать символы!')
+    print('Рад приветствовать,', user_name, end='! ')
+    return user_name
+
+
+def enter_age():
+    """Функция ввода возраста"""
+    while True:
+        try:
+            print('Сколько вам полных лет?', end=' ')
+            user_age = int(input('(Пример: 32): '))
+            if 6 <= user_age <= 100:
+                break
+            else:
+                print('Введите реальный возраст (от 6 до 110)!')
+        except ValueError:
+            print('Ошибка формата ввода данных')
+    return user_age
+
+
+def enter_weight():
+    """Функция ввода веса"""
+    while True:
+        try:
+            print('Какой ваш вес в килограммах?', end=' ')
+            user_weight = float(input('(Пример: 79.4 или 85): '))
+            if 20 <= user_weight <= 200:
+                break
+            else:
+                print('Введите реальный вес (от 20 до 200)!')
+        except ValueError:
+            print('Ошибка формата ввода данных')
+    return user_weight
+
+
+def enter_height():
+    """Функция ввода роста"""
+    while True:
+        try:
+            print('Укажите Ваш рост в метрах.', end=' ')
+            user_height = float(input('(Пример: 1.81 или 2): '))
+            if 0.5 <= user_height <= 2.5:
+                break
+            else:
+                print('Введите реальный рост (от 0.5 до 2.5 метров)!')
+        except ValueError:
+            print('Ошибка формата ввода данных')
+    return user_height
+
+
 def hello_user():
     """Функция приветствует пользователя, получает от него данные"""
-    # Приветствуем пользователя и спрашиваем его имя. Полученный ответ в виде
-    # строки с заглавными буквами каждого слова записываем в
-    # переменную user_name
+    # Приветствуем пользователя и спрашиваем его имя. Из полученного ответа
+    # удаляем пробелы в начале и в конце, первые буквы слов делаем заглавными.
+    # Записываем резельтат в переменную user_name
     print('Привет! Я бот Fitlife. Давайте знакомиться!')
-    user_name = input('Как Вас зовут? ').title()
-    print('Рад приветствовать,', user_name, end='! ')
+    user_name = enter_name()
     # Выводим на экран общую информацию о возможностях нашей программы
     print('Я помогу Вам высчитать индекс массы тела')
     print('и дам рекомендации по суточной норме воды.')
@@ -41,19 +95,15 @@ def hello_user():
     print('Прошу вводить их в указанных единицах для корректности подсчётов.')
     # Считываем введённые данные о возрасте, весе, росте, приводим их
     # к нужному типу и присваиваем значение переменным
-    print('Сколько вам полных лет?', end=' ')
-    user_age = input('(Пример: 32)|: ')
-    print('Какой ваш вес в килограммах?', end=' ')
-    user_weight = input('(Пример: 79.4 или 85): ')
-    print('Укажите Ваш рост в метрах.', end=' ')
-    user_height = input('(Пример: 1.81 или 2): ')
+    user_age = enter_age()
+    user_weight = enter_weight()
+    user_height = enter_height()
     return user_name, user_age, user_weight, user_height
 
 
 def calculate_bmi(weight, height):
     """Функция для подсчёта индекса массы тела"""
-    bmi = weight / (height ** 2)
-    return round(bmi, 1)
+    return round((weight / height ** 2), 1)
 
 
 def calculate_daily_water(weight):
@@ -80,14 +130,5 @@ clear_console()
 print_head()
 # Запрашиваем данные у пользователя, преобразуем их, записываем результат
 name, age, weight, height = hello_user()
-try:
-    # Приводим переменные к нужному типу
-    age = int(age)
-    weight = float(weight)
-    height = float(height)
-except ValueError:
-    # Выводим сообщение об ошибке ввода, если не удалось преобразовать данные
-    print('Критическая ошибка. Проверьте правильность ввода данных.')
-    sys.exit(1)
 # Считаем и выводим нужные параметры
 calc_print_result(name, age, weight, height)
