@@ -42,7 +42,7 @@ def enter_age():
         try:
             print('Сколько вам полных лет?', end=' ')
             user_age = int(input('(Пример: 32): '))
-            if 6 <= user_age <= 100:
+            if 6 <= user_age <= 110:
                 break
             else:
                 print('Введите реальный возраст (от 6 до 110)!')
